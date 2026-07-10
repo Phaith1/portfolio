@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Faith Idigbe | Frontend Developer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --navy: #0B1120;
+      --navy-mid: #111c2e;
+      --off-white: #F0EDE6;
+      --teal: #00C2A8;
+      --amber: #F5A623;
+      --slate: #8892A4;
+      --card-bg: #131f35;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background: var(--navy); color: var(--off-white); line-height: 1.6; }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1.1rem 6vw;
+      background: rgba(11,17,32,0.88);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(0,194,168,0.1);
+    }
+    .nav-logo { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 1.1rem; color: var(--teal); }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a { text-decoration: none; color: var(--slate); font-size: 0.875rem; font-weight: 500; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--off-white); }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh; display: flex; align-items: center;
+      padding: 8rem 6vw 5rem; position: relative; overflow: hidden;
+    }
+    canvas#circuit { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0.16; pointer-events: none; }
+    .hero-inner { position: relative; z-index: 1; max-width: 680px; }
+    .hero-tag {
+      display: inline-block; font-size: 0.75rem; font-weight: 700;
+      letter-spacing: 0.13em; text-transform: uppercase; color: var(--teal);
+      border: 1px solid var(--teal); padding: 0.3rem 0.8rem;
+      border-radius: 2px; margin-bottom: 1.5rem;
+    }
+    .hero h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(2.6rem, 7vw, 5rem);
+      font-weight: 700; line-height: 1.05; color: var(--off-white);
+      margin-bottom: 0.5rem;
+    }
+    .name-teal { color: var(--teal); }
+    .hero-sub {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(1rem, 2.5vw, 1.3rem);
+      color: var(--slate); margin-bottom: 1.5rem;
+    }
+    #typed-role { color: var(--amber); font-weight: 600; }
+    .cursor {
+      display: inline-block; width: 2px; height: 1em;
+      background: var(--amber); margin-left: 2px;
+      animation: blink 0.9s step-end infinite; vertical-align: text-bottom;
+    }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+    .hero-desc { color: var(--slate); font-size: 0.97rem; max-width: 530px; margin-bottom: 2.4rem; line-height: 1.75; }
+    .hero-cta { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .btn-primary {
+      padding: 0.75rem 1.7rem; background: var(--teal); color: var(--navy);
+      font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 0.9rem;
+      border: none; border-radius: 4px; cursor: pointer; text-decoration: none;
+      transition: transform 0.18s, box-shadow 0.18s;
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(0,194,168,0.35); }
+    .btn-outline {
+      padding: 0.75rem 1.7rem; background: transparent; color: var(--off-white);
+      font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 0.9rem;
+      border: 1.5px solid rgba(240,237,230,0.22); border-radius: 4px; cursor: pointer;
+      text-decoration: none; transition: border-color 0.18s;
+    }
+    .btn-outline:hover { border-color: var(--off-white); }
+
+    /* SECTIONS */
+    section { padding: 7rem 6vw; }
+    .section-label {
+      font-size: 0.73rem; font-weight: 700; letter-spacing: 0.15em;
+      text-transform: uppercase; color: var(--teal); margin-bottom: 0.5rem;
+    }
+    .section-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      font-weight: 700; color: var(--off-white); margin-bottom: 0.9rem;
+    }
+    .section-divider { width: 38px; height: 3px; background: var(--teal); border-radius: 2px; margin-bottom: 3rem; }
+
+    /* ABOUT */
+    .about-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 5rem; align-items: start; }
+    .about-text p { color: var(--slate); font-size: 0.95rem; margin-bottom: 1.1rem; line-height: 1.75; }
+    .about-text strong { color: var(--off-white); font-weight: 600; }
+    .about-stats { display: flex; gap: 2.5rem; margin-top: 2rem; flex-wrap: wrap; }
+    .stat-num { font-family: 'Space Grotesk', sans-serif; font-size: 2rem; font-weight: 700; color: var(--teal); }
+    .stat-label { font-size: 0.73rem; color: var(--slate); text-transform: uppercase; letter-spacing: 0.08em; }
+
+    /* SKILLS */
+    .skills-section-label { font-size: 0.73rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--slate); margin-bottom: 1rem; }
+    .skills-group { margin-bottom: 1.5rem; }
+    .skills-grid { display: flex; flex-wrap: wrap; gap: 0.55rem; }
+    .skill-tag {
+      font-size: 0.8rem; font-weight: 500; padding: 0.35rem 0.8rem;
+      border-radius: 3px; border: 1px solid rgba(0,194,168,0.28);
+      color: var(--teal); background: rgba(0,194,168,0.07);
+      transition: background 0.18s, border-color 0.18s;
+    }
+    .skill-tag:hover { background: rgba(0,194,168,0.15); border-color: var(--teal); }
+    .skill-tag.amber {
+      border-color: rgba(245,166,35,0.28); color: var(--amber);
+      background: rgba(245,166,35,0.07);
+    }
+    .skill-tag.amber:hover { background: rgba(245,166,35,0.15); border-color: var(--amber); }
+    .skill-tag.soft {
+      border-color: rgba(136,146,164,0.28); color: var(--slate);
+      background: rgba(136,146,164,0.07);
+    }
+
+    /* PROJECTS */
+    .projects-section { background: var(--navy-mid); }
+    .projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.4rem; }
+    .project-card {
+      background: var(--card-bg); border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 8px; padding: 1.8rem;
+      transition: transform 0.22s, border-color 0.22s, box-shadow 0.22s;
+      display: flex; flex-direction: column; gap: 0.9rem;
+    }
+    .project-card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(0,194,168,0.32);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.35);
+    }
+    .project-icon { font-size: 1.5rem; }
+    .project-title { font-family: 'Space Grotesk', sans-serif; font-size: 1.05rem; font-weight: 700; color: var(--off-white); }
+    .project-desc { font-size: 0.85rem; color: var(--slate); line-height: 1.68; }
+    .project-bullets { list-style: none; display: flex; flex-direction: column; gap: 0.35rem; }
+    .project-bullets li { font-size: 0.82rem; color: var(--slate); padding-left: 1rem; position: relative; }
+    .project-bullets li::before { content: '›'; position: absolute; left: 0; color: var(--teal); }
+    .project-tags { display: flex; flex-wrap: wrap; gap: 0.45rem; margin-top: auto; }
+    .project-tag { font-size: 0.7rem; padding: 0.2rem 0.55rem; background: rgba(0,194,168,0.1); color: var(--teal); border-radius: 2px; font-weight: 600; }
+    .project-link { font-size: 0.8rem; font-weight: 600; color: var(--teal); text-decoration: none; transition: opacity 0.15s; }
+    .project-link:hover { opacity: 0.75; }
+
+    /* CERTS */
+    .certs-section { }
+    .certs-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1.2rem; }
+    .cert-card {
+      border: 1px solid rgba(0,194,168,0.18); border-radius: 6px;
+      padding: 1.4rem; background: rgba(0,194,168,0.04);
+      display: flex; gap: 1rem; align-items: flex-start;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .cert-card:hover { border-color: rgba(0,194,168,0.4); background: rgba(0,194,168,0.08); }
+    .cert-icon { font-size: 1.4rem; flex-shrink: 0; margin-top: 0.1rem; }
+    .cert-name { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 0.9rem; color: var(--off-white); margin-bottom: 0.25rem; }
+    .cert-org { font-size: 0.78rem; color: var(--teal); font-weight: 500; }
+    .cert-year { font-size: 0.72rem; color: var(--slate); margin-top: 0.2rem; }
+
+    /* EXPERIENCE */
+    .exp-section { background: var(--navy-mid); }
+    .exp-list { display: flex; flex-direction: column; gap: 2.5rem; max-width: 680px; }
+    .exp-item { display: flex; gap: 1.6rem; }
+    .exp-dot-col { display: flex; flex-direction: column; align-items: center; padding-top: 0.3rem; }
+    .exp-dot { width: 10px; height: 10px; background: var(--teal); border-radius: 50%; flex-shrink: 0; }
+    .exp-line { flex: 1; width: 1px; background: rgba(0,194,168,0.18); margin-top: 6px; }
+    .exp-role { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 1rem; color: var(--off-white); }
+    .exp-company { font-size: 0.83rem; color: var(--teal); font-weight: 600; margin-bottom: 0.2rem; }
+    .exp-date { font-size: 0.72rem; color: var(--slate); margin-bottom: 0.55rem; letter-spacing: 0.05em; }
+    .exp-desc { font-size: 0.85rem; color: var(--slate); }
+
+    /* CONTACT */
+    .contact-inner { max-width: 540px; }
+    .contact-inner p { color: var(--slate); font-size: 0.96rem; margin-bottom: 2.5rem; line-height: 1.75; }
+    .contact-links { display: flex; flex-direction: column; gap: 0.85rem; }
+    .contact-row {
+      display: flex; align-items: center; gap: 1rem;
+      padding: 1rem 1.25rem; border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 6px; background: var(--card-bg);
+      text-decoration: none; color: var(--off-white);
+      font-size: 0.88rem; font-weight: 500;
+      transition: border-color 0.18s, background 0.18s;
+    }
+    .contact-row:hover { border-color: rgba(0,194,168,0.38); background: rgba(0,194,168,0.05); }
+    .contact-icon { font-size: 1.15rem; }
+    .contact-label { color: var(--slate); font-size: 0.72rem; margin-top: 0.1rem; }
+
+    /* FOOTER */
+    footer {
+      padding: 2rem 6vw; border-top: 1px solid rgba(255,255,255,0.07);
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 1rem; font-size: 0.78rem; color: var(--slate);
+    }
+    .footer-logo { font-family: 'Space Grotesk', sans-serif; font-weight: 700; color: var(--teal); }
+
+    /* RESPONSIVE */
+    @media (max-width: 750px) {
+      .about-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .nav-links { display: none; }
+      section { padding: 5rem 5vw; }
+    }
+    @media (prefers-reduced-motion: reduce) { .cursor { animation: none; } }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <span class="nav-logo">FI.</span>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#certifications">Certifications</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <canvas id="circuit"></canvas>
+  <div class="hero-inner">
+    <div class="hero-tag">Open to Internship Opportunities</div>
+    <h1>Hi, I'm <span class="name-teal">Faith Idigbe.</span></h1>
+    <p class="hero-sub">
+      <span id="typed-role"></span><span class="cursor"></span>
+    </p>
+    <p class="hero-desc">
+      Software Engineering graduate from the University of Delta, Agbor. I like building things that work well and look good,  and I enjoy figuring out why something broke just as much as getting it right the first time.
+    </p>
+    <div class="hero-cta">
+      <a href="https://github.com/Phaith1" target="_blank" class="btn-primary">GitHub</a>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-label">Who I am</div>
+  <h2 class="section-title">About Me</h2>
+  <div class="section-divider"></div>
+  <div class="about-grid">
+    <div class="about-text">
+      <p>
+        I studied Software Engineering at the University of Delta, Agbor and graduated with a BSc. Most of what I know practically came from just building things: a service booking app, a finance tracker, a portfolio, and figuring out the problems as they came.
+      </p>
+      <p>
+        I've touched both sides of the stack. Frontend is where I spend most of my time (React, JS, CSS), but I've also worked with Django on the backend and connected the two via REST APIs. I find the frontend-backend handshake genuinely interesting.
+      </p>
+      <p>
+        Right now I'm looking for an internship where I can work alongside people who'll push me. I learn fast, I ask questions, and I don't pretend to know things I don't.
+      </p>
+      <div class="about-stats">
+        <div class="stat-item">
+          <div class="stat-num">3+</div>
+          <div class="stat-label">Projects Built</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">3</div>
+          <div class="stat-label">Certifications</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">BSc</div>
+          <div class="stat-label">Software Eng.</div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="skills-section-label">Frontend</div>
+      <div class="skills-group">
+        <div class="skills-grid">
+          <span class="skill-tag">HTML5</span>
+          <span class="skill-tag">CSS3</span>
+          <span class="skill-tag">JavaScript</span>
+          <span class="skill-tag">React</span>
+          <span class="skill-tag">Bootstrap</span>
+          <span class="skill-tag">Responsive Design</span>
+        </div>
+      </div>
+
+      <div class="skills-section-label" style="margin-top:1.2rem;">Tools & Concepts</div>
+      <div class="skills-group">
+        <div class="skills-grid">
+          <span class="skill-tag amber">Git & GitHub</span>
+          <span class="skill-tag amber">VS Code</span>
+          <span class="skill-tag amber">Figma</span>
+          <span class="skill-tag amber">RESTful APIs</span>
+          <span class="skill-tag amber">Django</span>
+        </div>
+      </div>
+
+      <div class="skills-section-label" style="margin-top:1.2rem;">Soft Skills</div>
+      <div class="skills-grid">
+        <span class="skill-tag soft">Detail-oriented</span>
+        <span class="skill-tag soft">Analytical</span>
+        <span class="skill-tag soft">Collaborative</span>
+        <span class="skill-tag soft">Problem-solver</span>
+        <span class="skill-tag soft">Fast learner</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects" class="projects-section">
+  <div class="section-label">What I've built</div>
+  <h2 class="section-title">Projects</h2>
+  <div class="section-divider"></div>
+  <div class="projects-grid">
+
+    <div class="project-card">
+      <div class="project-icon">🔧</div>
+      <div>
+        <div class="project-title">Service Booking Platform</div>
+        <p class="project-desc">A full-stack app that connects people who need a service with people who offer one. Django on the back, Bootstrap and CSS3 on the front.</p>
+      </div>
+      <ul class="project-bullets">
+        <li>Built responsive UI using Bootstrap and CSS3</li>
+        <li>Integrated frontend with Django REST API</li>
+        <li>Handled form validation, routing, and state management</li>
+        <li>Team collaboration via GitHub workflows</li>
+      </ul>
+      <div class="project-tags">
+        <span class="project-tag">Django</span>
+        <span class="project-tag">Bootstrap</span>
+        <span class="project-tag">REST API</span>
+        <span class="project-tag">CSS3</span>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-icon">💰</div>
+      <div>
+        <div class="project-title">Budget Buddy</div>
+        <p class="project-desc">A personal finance tracker I built to actually use. Tracks income and expenses, works offline, and doesn't need a backend.</p>
+      </div>
+      <ul class="project-bullets">
+        <li>Interactive dashboards and charts with JavaScript and CSS Grid</li>
+        <li>Offline data persistence via Local Storage</li>
+        <li>Fully responsive across desktop and mobile</li>
+        <li>Custom animations and intuitive form interactions</li>
+      </ul>
+      <div class="project-tags">
+        <span class="project-tag">JavaScript</span>
+        <span class="project-tag">HTML & CSS</span>
+        <span class="project-tag">Local Storage</span>
+        <span class="project-tag">CSS Grid</span>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-icon">🌐</div>
+      <div>
+        <div class="project-title">Portfolio Website</div>
+        <p class="project-desc">This site, basically. Designed and built it myself with React,  partly to have something to show, partly because it was a good excuse to practice.</p>
+      </div>
+      <ul class="project-bullets">
+        <li>Built with React.js using reusable components</li>
+        <li>Smooth scrolling navigation and clean layout</li>
+        <li>Deployed via GitHub Pages for public access</li>
+      </ul>
+      <div class="project-tags">
+        <span class="project-tag">React</span>
+        <span class="project-tag">GitHub Pages</span>
+      </div>
+      <a href="https://github.com/Phaith1" target="_blank" class="project-link">→ GitHub</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- CERTIFICATIONS -->
+<section id="certifications">
+  <div class="section-label">Learning & Growth</div>
+  <h2 class="section-title">Certifications</h2>
+  <div class="section-divider"></div>
+  <div class="certs-grid">
+
+    <div class="cert-card">
+      <div class="cert-icon">🏅</div>
+      <div>
+        <div class="cert-name">Frontend Developer Internship</div>
+        <div class="cert-org">Trueminds Innovations Ltd,  Cohort One</div>
+        <div class="cert-year">Feb 2026 – Apr 2026</div>
+      </div>
+    </div>
+
+    <div class="cert-card">
+      <div class="cert-icon">🎓</div>
+      <div>
+        <div class="cert-name">Front-End Engineering</div>
+        <div class="cert-org">Women Techsters Fellowship</div>
+        <div class="cert-year">2024</div>
+      </div>
+    </div>
+
+    <div class="cert-card">
+      <div class="cert-icon">⚙️</div>
+      <div>
+        <div class="cert-name">Back-End Engineering</div>
+        <div class="cert-org">Side Hustle Internship</div>
+        <div class="cert-year">2023</div>
+      </div>
+    </div>
+
+    <div class="cert-card">
+      <div class="cert-icon">📊</div>
+      <div>
+        <div class="cert-name">Data Analysis</div>
+        <div class="cert-org">SHE LEAD AFRICA Internship</div>
+        <div class="cert-year">Ongoing</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience" class="exp-section">
+  <div class="section-label">Where I've been</div>
+  <h2 class="section-title">Experience</h2>
+  <div class="section-divider"></div>
+  <div class="exp-list">
+
+    <div class="exp-item">
+      <div class="exp-dot-col">
+        <div class="exp-dot"></div>
+        <div class="exp-line"></div>
+      </div>
+      <div>
+        <div class="exp-role">Frontend Developer Intern</div>
+        <div class="exp-company">Trueminds Innovations Ltd,  Cohort One</div>
+        <div class="exp-date">Feb 2026 – Apr 2026</div>
+        <div class="exp-desc">Completed a structured internship program as a frontend developer. Built and shipped real features, worked independently and within a team, and got exposure to a professional development environment.</div>
+      </div>
+    </div>
+
+    <div class="exp-item">
+      <div class="exp-dot-col">
+        <div class="exp-dot"></div>
+        <div class="exp-line"></div>
+      </div>
+      <div>
+        <div class="exp-role">ICT Intern</div>
+        <div class="exp-company">Government House,  EA ICT, Asaba, Delta State</div>
+        <div class="exp-date">Internship · Asaba, Delta State</div>
+        <div class="exp-desc">Handled database queries and supported day-to-day ICT operations. It was my first real look at how tech works inside a large institution,  slower than a startup, but you see a different kind of problem.</div>
+      </div>
+    </div>
+
+    <div class="exp-item">
+      <div class="exp-dot-col">
+        <div class="exp-dot"></div>
+        <div class="exp-line"></div>
+      </div>
+      <div>
+        <div class="exp-role">Front-End Engineering Fellow</div>
+        <div class="exp-company">Women Techsters Fellowship</div>
+        <div class="exp-date">2024</div>
+        <div class="exp-desc">A structured frontend fellowship that pushed me beyond tutorials into real project work. Spent a lot of time in React and got more comfortable with writing code I'd actually want someone else to read.</div>
+      </div>
+    </div>
+
+    <div class="exp-item">
+      <div class="exp-dot-col">
+        <div class="exp-dot"></div>
+        <div class="exp-line"></div>
+      </div>
+      <div>
+        <div class="exp-role">Back-End Engineering Intern</div>
+        <div class="exp-company">Side Hustle Internship</div>
+        <div class="exp-date">2023</div>
+        <div class="exp-desc">Worked on backend development as part of a cohort. Helped me understand what's actually happening on the server side,  which made me a better frontend developer too.</div>
+      </div>
+    </div>
+
+    <div class="exp-item">
+      <div class="exp-dot-col">
+        <div class="exp-dot"></div>
+      </div>
+      <div>
+        <div class="exp-role">BSc Software Engineering</div>
+        <div class="exp-company">University of Delta, Agbor,  Faculty of Computing</div>
+        <div class="exp-date">Graduated: August 2025</div>
+        <div class="exp-desc">Relevant coursework: Web Development, Software Design, Agile Methods, Mobile App Development.</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- INTERESTS -->
+<section id="interests">
+  <div class="section-label">What I'm into</div>
+  <h2 class="section-title">Interests</h2>
+  <div class="section-divider"></div>
+  <div class="skills-grid">
+    <span class="skill-tag">UI/UX Design</span>
+    <span class="skill-tag">User-Centric Interfaces</span>
+    <span class="skill-tag amber">Open-Source Contributions</span>
+    <span class="skill-tag amber">Advanced React Patterns</span>
+    <span class="skill-tag amber">Next.js</span>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-label">Let's talk</div>
+  <h2 class="section-title">Get In Touch</h2>
+  <div class="section-divider"></div>
+  <div class="contact-inner">
+    <p>
+      I'm actively looking for internship and junior roles. If something on this page caught your attention or you just want to talk, feel free to reach out. I'm pretty easy to get hold of.
+    </p>
+    <div class="contact-links">
+      <a href="mailto:idigbefaith9@gmail.com" class="contact-row">
+        <span class="contact-icon">✉️</span>
+        <div>
+          <div>idigbefaith9@gmail.com</div>
+          <div class="contact-label">Email me directly</div>
+        </div>
+      </a>
+      <a href="tel:+2348117669211" class="contact-row">
+        <span class="contact-icon">📞</span>
+        <div>
+          <div>+234 811 766 9211</div>
+          <div class="contact-label">Call or WhatsApp</div>
+        </div>
+      </a>
+      <a href="https://github.com/Phaith1" target="_blank" class="contact-row">
+        <span class="contact-icon">🐙</span>
+        <div>
+          <div>github.com/Phaith1</div>
+          <div class="contact-label">See my code</div>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span class="footer-logo">FI.</span>
+  <span>Designed & built by Faith Idigbe · Lagos, Nigeria · 2026</span>
+</footer>
+
+<script>
+  // TYPEWRITER
+  const roles = ['Frontend Developer.', 'React Engineer.', 'UI/UX Enthusiast.', 'Full-Stack in Progress.'];
+  let ri = 0, ci = 0, deleting = false;
+  const el = document.getElementById('typed-role');
+  function type() {
+    const word = roles[ri];
+    el.textContent = deleting ? word.slice(0, ci--) : word.slice(0, ci++);
+    let delay = deleting ? 55 : 105;
+    if (!deleting && ci === word.length + 1) { delay = 1900; deleting = true; }
+    else if (deleting && ci === 0) { deleting = false; ri = (ri + 1) % roles.length; delay = 380; }
+    setTimeout(type, delay);
+  }
+  type();
+
+  // CIRCUIT CANVAS
+  const canvas = document.getElementById('circuit');
+  const ctx = canvas.getContext('2d');
+  let W, H, nodes = [], lines = [];
+  function resize() {
+    W = canvas.width = canvas.offsetWidth;
+    H = canvas.height = canvas.offsetHeight;
+    init();
+  }
+  function init() {
+    nodes = []; lines = [];
+    const count = Math.floor((W * H) / 13000);
+    for (let i = 0; i < count; i++) nodes.push({ x: Math.random() * W, y: Math.random() * H });
+    for (let i = 0; i < nodes.length; i++)
+      for (let j = i + 1; j < nodes.length; j++) {
+        const d = Math.hypot(nodes[i].x - nodes[j].x, nodes[i].y - nodes[j].y);
+        if (d < 135) lines.push([i, j, d]);
+      }
+  }
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    ctx.strokeStyle = '#00C2A8'; ctx.lineWidth = 0.6;
+    for (const [a, b, d] of lines) {
+      ctx.globalAlpha = 1 - d / 135;
+      ctx.beginPath(); ctx.moveTo(nodes[a].x, nodes[a].y); ctx.lineTo(nodes[b].x, nodes[b].y); ctx.stroke();
+    }
+    ctx.globalAlpha = 0.55; ctx.fillStyle = '#00C2A8';
+    for (const n of nodes) { ctx.beginPath(); ctx.arc(n.x, n.y, 1.5, 0, Math.PI * 2); ctx.fill(); }
+  }
+  window.addEventListener('resize', () => { resize(); draw(); });
+  resize(); draw();
+</script>
+</body>
+</html>
